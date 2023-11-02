@@ -1,0 +1,128 @@
+Kayla M. Barton - VA Finder CLI design prototype (Assignment 4)
+
+**Notes about this prototype:
+	- lines marked with "~" will be scroll/selectable options and will change color to indicate movement through the menu list
+	- lines marked with "#" indicate the user interaction that led to the user view in that section
+	- examples of input/output are in square brackets
+
+-----------------------------------------------------
+
+**Home View**
+
+Welcome to VA Finder! (maybe some cool big letters/title, maybe not)
+
+Find voice actors and the top ten most popular characters they voice for!
+To get started:
+	-- Select a search option by using the up and down arrows on your keyboard then pressing Enter.
+	-- Each search option will give the top five respective matches from which you can choose.
+	-- (New!) Select "Help" for more information and search tips.
+	-- Selecting "Exit" will close this program.
+
+> Select an option:
+~ Search by character name
+~ Search by voice actor name
+~ Help
+~ Exit
+
+-----------------------------------------------------
+
+# "Search by character name" selected from main menu:
+
+> Enter character name: [ex: Leroro]
+...searching
+
+> Please select the correct character or return to the main menu:
+~ Lero-Ro (Tower of God)
+~ . . . [up to four more options matching the search]
+
+~ Return to Main Menu
+
+---------
+
+# character selected from results list:
+
+Other characters voiced by: [ex: Kenjirou Tsuda]
+[Kento Nanami (Jujutsu Kaisen)]
+[Atomic Samurai (One Punch Man)]
+. . . [eight more results in 'character name (anime)' format]
+
+> Select an option:
+~ Search by character name
+~ Search by voice actor name
+~ Help
+~ Exit
+
+-----------------------------------------------------
+
+# 'Search by voice actor name' selected from main menu:
+
+> Enter voice actor name: [ex: Tsuda]
+...searching
+
+> Please select the correct voice actor or return to main menu:
+~ [Kenjirou Tsuda]
+~ [Minami Tsuda]
+~ . . . [up to three more options matching the search]
+~ Return to Main Menu
+
+---------
+
+# "Kenjirou Tsuda" is selected from results list:
+
+Other characters voiced by: [ex: Kenjirou Tsuda]
+[Kento Nanami (Jujutsu Kaisen)]
+[Atomic Samurai (One Punch Man)]
+. . . [eight more results in 'character name (anime)' format]
+
+> Select an option:
+~ Search by character name
+~ Search by voice actor name
+~ Help
+~ Exit
+
+-----------------------------------------------------
+
+# "Help" is selected from main menu:
+
+> Sure! Here are some tips for using VA Finder: 
+-- Selecting "Search by Character" will first search for anime characters matching your name search. Many characters have similar or the same names, so you will then be able to select from a list of matches. Once the character that you're searching for is confirmed, the voice actor who voices that character will be displayed, along with the top ten most popular characters they voice for.
+
+-- If you know the voice actor's name already, you can select the "Search by voice actor" option. This option will also display the top five matches from anilist for you to scroll through using the arrows on your keyboard.
+
+-- Using both first and last name in either search option increases your chances of finding a match
+
+-- This tool was built using the anilist API, so the popularity of characters is based on
+   the anilist rankings.
+
+-- Selecting "Exit" stops the program.
+
+> Select an option:
+~ Search by character name
+~ Search by voice actor name
+~ Help
+~ Exit
+
+-----------------------------------------------------
+
+# "Return to Main Menu" is selected when viewing results list:
+
+> Select an option:
+~ Search by character name
+~ Search by voice actor name
+~ Help
+~ Exit
+
+-----------------------------------------------------
+
+## if there is not a result found (both search options):
+
+No results found, please try again or select "Help" for search tips.
+
+> Select an option:
+~ Search by character name
+~ Search by voice actor name
+~ Help
+~ Exit
+
+-----------------------------------------------------
+
