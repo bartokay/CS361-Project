@@ -56,7 +56,7 @@ def main():
             # select from query (tbd)
             char_select = inquirer.rawlist(
                 message="Please select the correct character or return to the main menu:",
-                choices= char_list,     # choices will use a list passed from query
+                choices=char_list,     # choices will use a list passed from query
                 default=1,
             ).execute()
             
@@ -82,29 +82,28 @@ def main():
             ).execute()
             print("The voice actor you searched for was: " + va_search)     # pass this output to query later, get back va_list
             va_list = [
-                "Kenjirou Tsuda\n"
-                "Natsuki Hanae\n"
-                "Minami Tsuda\n"
-                "...[up to two more options matching the search]\n"
+                "Kenjirou Tsuda",
+                "Natsuki Hanae",
+                "Minami Tsuda"
             ]
             va_list.append("Return to Main Menu")
 
             # select from query (tbd)
             va_select = inquirer.rawlist(
                 message="Please select the correct voice actor, or return to the main menu:",
-                choices= va_list,       # list passed from query
+                choices=va_list,       # list passed from query
                 default=1,
             ).execute()
 
             # return to main menu
-            if char_select == 'Return to Main Menu':
+            if va_select == 'Return to Main Menu':
                 next
 
             # va chosen (get character search results from query)
             print("Top ten characters voiced by Kenjirou Tsuda: \n\n"
                     "Kento Nanami (Jujutsu Kaisen)\n"
                     "Atomic Samurai (One Punch Man)\n"
-                    "... [eight more results in 'character name (anime)' format]")    # query search results
+                    "... [eight more results in 'character name (anime)' format]\n")    # query search results
         
         # help selected ----------------------------------------------------------------------------------------------
         if home == "help":
