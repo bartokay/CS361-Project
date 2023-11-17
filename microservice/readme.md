@@ -36,8 +36,16 @@ url = 'http://localhost:8000/perm/?min=1&max=10'
 ```python
 response = requests.get(url).json()
 
-# unpack the json from the response:
-permutation = json.dumps(response, indent=4, ensure_ascii=False).encode('utf8').decode()
+# convert json object to prettified json string
+json_obj = json.dumps(response, indent=4, ensure_ascii=False).encode('utf8').decode()
+print(json_obj)
+
+# these should be the same thing
+print(json.loads(json_obj))     # load prettified thing
+print(response)     			# original
+
+# get just perm values (list)
+print(response.get("perm"))
 ```
 ** note that url in `requests.get(url).json()` matches the variable name from the GET request example.
 
