@@ -45,6 +45,43 @@ def get_va_by_search(search_str: str):
     filtered_staff = filter(lambda staff: 'Voice Actor' in staff['primaryOccupations'], results['data']['Page']['staff'])
     return list(filtered_staff)
 
+def get_va_chars(va_id: int):
+    """
+    give formatted string of the chars?
+    """
+    chars_query = '''
+    query ($id: Int) {    
+        Staff (id: $id) {
+            characters(page: 1, perPage: 10, sort: FAVOURITES_DESC) {
+                nodes {
+                    name {
+                        full
+                    }
+                    media (sort: FAVOURITES_DESC) {
+                        nodes {
+                            title {
+                                english
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    '''
+
+    vars = {
+        'id': va_id
+    }
+
+    results = contact_anilist(chars_query, vars)
+    path = results['data']['Staff']['characters']['nodes']
+    filtered_chars = [(char['name']['full'], char['media']['nodes'][0]['title']['english']) for char in path]
+    formatted_out = ''
+    for char in filtered_chars:
+        formatted_out += f"{char[0]} ({char[1]}) \n"
+
+    return formatted_out
 
 def contact_anilist(query_str, vars):
     """

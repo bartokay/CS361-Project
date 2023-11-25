@@ -92,7 +92,7 @@ def main():
             ).execute()
             print("The voice actor you searched for was: " + va_search)     # pass this output to query later, get back va_list
             filtered_search = queries.get_va_by_search(va_search)
-            va_list = [staff['name']['full'] for staff in filtered_search]
+            va_list = [va['name']['full'] for va in filtered_search]
             max_len = 4 if len(va_list) > 4 else len(va_list)
             va_list = va_list[:max_len + 1]
             va_list.append("Return to Main Menu")
@@ -103,16 +103,17 @@ def main():
                 choices=va_list,       # list passed from query
                 default=1,
             ).execute()
-
+            
             # return to main menu
             if va_select == 'Return to Main Menu':
                 next
 
             # va chosen (get character search results from query)
-            print("Top ten characters voiced by Kenjirou Tsuda: \n\n"
-                    "Kento Nanami (Jujutsu Kaisen)\n"
-                    "Atomic Samurai (One Punch Man)\n"
-                    "... [eight more results in 'character name (anime)' format]\n")    # query search results
+            for va in filtered_search:
+                if va['name']['full'] == va_select:
+                    va_id = va['id']
+            chars = queries.get_va_chars(va_id)
+            print(f"Top ten characters voiced by {va_select}: \n\n", chars)    # query search results
         
         # random character ----------------------------------------------------------------------------------------------------
         # if home == "rand_char":
