@@ -2,38 +2,49 @@ from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from clint.textui import puts, colored, indent, columns
 
+# local imports
+import queries
+
 def main():
     """
     User interface/prompting for command line
     """
     col = 70
 
+    # welcome message --------------------------------------------------------------------------------------------------------
     puts(colored.magenta("Welcome to VA Finder!"))
     puts("Find voice actors and the top ten most popular characters they voice for!")
     puts("To get started:")
     with indent(11, quote=colored.magenta('~')):
-        puts(columns(["Select a search option by using the up and down arrows on your ", col]))
+        puts(columns(["Scroll through menu options using the up and down arrows on your ", col]))
     with indent(11):
-        puts(columns(["keyboard then pressing Enter.", col]))
+        puts(columns(["keyboard, then press Enter to select.", col]))
 
-    with indent(11, quote=colored.magenta('~')):
-        puts(columns(["Each search option will give the top five respective ", col]))
-    with indent(11):
-        puts(columns(["matches from which you can choose.", col]))
+    # with indent(11, quote=colored.magenta('~')):
+    #     puts(columns(["Character and Voice Actor search options will give the top five respective ", col]))
+    # with indent(11):
+    #     puts(columns(["matches from which you can choose.", col]))
 
     with indent(11, quote=colored.magenta('~')):
         with indent(1, quote=colored.blue("(New!) ")):
-            puts(columns([" Select \"Help\" for more information and search tips.", col]))
+            puts(columns(["Just feel like browsing? Need a low stakes gacha fix?", col]))
+        with indent(11):
+            puts(columns(["The \"Random Character VA!\" option chooses a random popular character to search for!", col]))
+
+    with indent(11, quote=colored.magenta('~')):
+        puts(columns(["Select \"Help\" for more information and search tips.", col]))
 
     with indent(11, quote=colored.magenta('~')):
         puts(columns(["Selecting \"Exit\" will close this program.", col]))
 
+    # main menu ---------------------------------------------------------------------------------------------------------------
     while True:
         home = inquirer.select(
             message="Select an Option:", 
             choices=[
-                Choice("char", name="Search by character"),
-                Choice("va", name="Search by voice actor"),
+                Choice("char", name="Search by Character"),
+                Choice("va", name="Search by Voice Actor"),
+                Choice("rand_char", name="Random Character VA!"),
                 Choice("help", name="Help"),
                 Choice(value=None, name="Exit")
             ],
@@ -73,19 +84,17 @@ def main():
                     "Teruki Hanazawa (Mob Psycho 100)\n"
                     "... [five more results in 'character name (anime)' format]\n")     # query search results
             next
-
         
-        # search by va selected ----------------------------------------------------------------------------------------------
+        # search by va -------------------------------------------------------------------------------------------------------
         if home == "va":
             va_search = inquirer.text(
                 message="Enter voice actor name: "
             ).execute()
             print("The voice actor you searched for was: " + va_search)     # pass this output to query later, get back va_list
-            va_list = [
-                "Kenjirou Tsuda",
-                "Natsuki Hanae",
-                "Minami Tsuda"
-            ]
+            filtered_search = queries.get_va_by_search(va_search)
+            va_list = [staff['name']['full'] for staff in filtered_search]
+            max_len = 4 if len(va_list) > 4 else len(va_list)
+            va_list = va_list[:max_len + 1]
             va_list.append("Return to Main Menu")
 
             # select from query (tbd)
@@ -105,7 +114,11 @@ def main():
                     "Atomic Samurai (One Punch Man)\n"
                     "... [eight more results in 'character name (anime)' format]\n")    # query search results
         
-        # help selected ----------------------------------------------------------------------------------------------
+        # random character ----------------------------------------------------------------------------------------------------
+        # if home == "rand_char":
+        #     surprise = get_rand_char()
+
+        # help/additional info ------------------------------------------------------------------------------------------------
         if home == "help":
             
             puts(colored.green("Sure! Here are some tips for using VA Finder:"))
@@ -131,7 +144,7 @@ def main():
             with indent(7, quote=colored.green('-->')):
                 puts(columns(["This tool was built using the anilist API, so the popularity of", col]))
             with indent(7):
-                puts(columns(["characters is based on the anilist rankings.", col]))
+                puts(columns(["characters is based on current anilist rankings.", col]))
 
             with indent(7, quote=colored.green('-->')):
                 puts(columns(["Selecting \"Exit\" stops the program.", col]))
