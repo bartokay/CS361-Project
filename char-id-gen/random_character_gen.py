@@ -2,6 +2,7 @@ import requests
 import time
 import random
 
+print('running')
 while True:
     # Read txt file every 5 seconds
     time.sleep(3)

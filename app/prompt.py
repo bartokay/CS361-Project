@@ -57,11 +57,7 @@ def main():
                 message="Enter character name: "
             ).execute()
             print("The character you searched was: " + char_search)     # pass this output to query later, get back char_list
-            char_list = [
-                    "Kazuto Kirigaya (Sword Art Online)",
-                    "Kirito Kamui (Psycho-Pass 2)",
-                    "Kirito Sakurai (Hanasaku Iroha)"
-                ]
+            char_list = queries.get_char_by_search(char_search)
             char_list.append("Return to Main Menu")
 
             # select from query (tbd)
@@ -97,7 +93,7 @@ def main():
             va_list = va_list[:max_len + 1]
             va_list.append("Return to Main Menu")
 
-            # select from query (tbd)
+            # select from query
             va_select = inquirer.rawlist(
                 message="Please select the correct voice actor, or return to the main menu:",
                 choices=va_list,       # list passed from query
@@ -113,11 +109,12 @@ def main():
                 if va['name']['full'] == va_select:
                     va_id = va['id']
             chars = queries.get_va_chars(va_id)
-            print(f"Top ten characters voiced by {va_select}: \n\n", chars)    # query search results
+            print(f"Top ten characters voiced by {va_select}:\n\n", chars)    # query search results
         
         # random character ----------------------------------------------------------------------------------------------------
-        # if home == "rand_char":
-        #     surprise = get_rand_char()
+        if home == "rand_char":
+            surprise = queries.get_rand_char()
+            print(f'character id number: {surprise}')
 
         # help/additional info ------------------------------------------------------------------------------------------------
         if home == "help":
