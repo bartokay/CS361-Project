@@ -39,7 +39,7 @@ def get_va_by_search(search_str: str) -> list:
     vars = {
         'search': search_str,
         'page': 1,
-        'perPage': 30
+        'perPage': 10
     }         
     
     try:
@@ -125,7 +125,7 @@ def get_char_by_id(id: int) -> dict:
     vars = {
         'id': id,
         'page': 1,
-        'perPage': 30
+        'perPage': 10
     }
 
     try:
@@ -172,7 +172,7 @@ def get_char_by_search(search_str: str) -> list:
     vars = {
         'search': search_str,
         'page': 1,
-        'perPage': 30
+        'perPage': 10
     }         
     
     try:
@@ -195,5 +195,4 @@ def contact_anilist(query_str, vars):
 
     # Make the HTTP Api request
     response = requests.post(url, json={'query': query_str, 'variables': vars}).json()
-
     return response

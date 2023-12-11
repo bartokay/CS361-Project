@@ -51,8 +51,8 @@ def main():
             char_search = inquirer.text(
                 message="Enter character name: "
             ).execute()
-            print("The character you searched was: " + char_search)
-
+            print(f"The character you searched was: {char_search}")
+                  
             # pass user search terms to query; char results = [(id, (name, anime))]
             char_results = queries.get_char_by_search(char_search)
 
@@ -63,6 +63,8 @@ def main():
             
             # filter out id; char_list = ['name (anime)',...]
             char_list = [f"{char['char_name']} ({char['anime']})" for char in char_results]
+            max_len = 4 if len(char_list) > 4 else len(char_list)
+            char_list = char_list[:max_len + 1]
             char_list.append("Return to Main Menu")
 
             # select from query (tbd)
@@ -86,8 +88,11 @@ def main():
             
             char_and_va_info = queries.get_char_by_id(selected_char_id)
             voiced_chars = queries.get_va_chars(char_and_va_info['va_id'])
-            print(f"{char_and_va_info['char_name']} is voiced by {char_and_va_info['va_name']}.\n")
-            puts(colored.green(f"\nTop ten characters voiced by {char_and_va_info['va_name']}:\n"))
+
+            puts(colored.magenta(f"{char_and_va_info['char_name']}"), newline=False)
+            print(" is voiced by ", end="")
+            puts(colored.green(f"{char_and_va_info['va_name']}.\n"))
+            puts(colored.green(f"Top ten characters voiced by {char_and_va_info['va_name']}:\n"))
             puts(colored.cyan(voiced_chars))
             continue
         
@@ -96,7 +101,8 @@ def main():
             va_search = inquirer.text(
                 message="Enter voice actor name: "
             ).execute()
-            print("The voice actor you searched for was: " + va_search)     # pass this output to query later, get back va_list
+            print("The voice actor you searched for was: ", end="")
+            puts(colored.green(va_search)) 
             filtered_search = queries.get_va_by_search(va_search)
 
             # Error
@@ -125,7 +131,7 @@ def main():
                 if va['name']['full'] == va_select:
                     va_id = va['id']
             voiced_chars = queries.get_va_chars(va_id)
-            puts(colored.green(f"\nTop ten characters voiced by {va_select}:\n"))
+            puts(colored.green(f"Top ten characters voiced by {va_select}:\n"))
             puts(colored.cyan(voiced_chars))
         
         # random character ----------------------------------------------------------------------------------------------------
@@ -147,9 +153,13 @@ def main():
                 continue
 
             voiced_chars = queries.get_va_chars(char_and_va_info['va_id'])
-            print(f"Your surprise character is: {char_and_va_info['char_name']} from {char_and_va_info['anime']}!\n",
-                  f"{char_and_va_info['char_name']} is voiced by {char_and_va_info['va_name']}.\n")
-            puts(colored.green(f"\nTop ten characters voiced by {char_and_va_info['va_name']}:\n"))
+            print(f"\nYour surprise character is: ", end="")
+            puts(colored.magenta(f"{char_and_va_info['char_name']} "), newline=False)
+            print(f"from {char_and_va_info['anime']}!")
+            puts(colored.magenta(f"{char_and_va_info['char_name']}"), newline=False)
+            print(" is voiced by ", end="")
+            puts(colored.green(f"{char_and_va_info['va_name']}.\n"))
+            puts(colored.green(f"Top ten characters voiced by {char_and_va_info['va_name']}:\n"))
             puts(colored.cyan(voiced_chars))
             continue
 
