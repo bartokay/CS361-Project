@@ -15,27 +15,22 @@ def main():
     puts(colored.magenta("Welcome to VA Finder!"))
     puts("Find voice actors and the top ten most popular characters they voice for!")
     puts("To get started:")
-    with indent(11, quote=colored.magenta('~')):
+    with indent(11, quote=colored.magenta("~")):
         puts(columns(["Scroll through menu options using the up and down arrows on your ", col]))
     with indent(11):
         puts(columns(["keyboard, then press Enter to select.", col]))
 
-    # with indent(11, quote=colored.magenta('~')):
-    #     puts(columns(["Character and Voice Actor search options will give the top five respective ", col]))
-    # with indent(11):
-    #     puts(columns(["matches from which you can choose.", col]))
-
-    with indent(11, quote=colored.magenta('~')):
-        with indent(1, quote=colored.blue("(New!) ")):
-            puts(columns(["Just feel like browsing? Need a low stakes gacha fix?", col]))
-        with indent(11):
-            puts(columns(["The \"Random Character VA!\" option chooses a random popular character to search for!", col]))
-
-    with indent(11, quote=colored.magenta('~')):
+    with indent(11, quote=colored.magenta("~")):
         puts(columns(["Select \"Help\" for more information and search tips.", col]))
 
-    with indent(11, quote=colored.magenta('~')):
+    with indent(11, quote=colored.magenta("~")):
         puts(columns(["Selecting \"Exit\" will close this program.", col]))
+    
+    with indent(11, quote=colored.magenta("~")):
+        with indent(1, quote=colored.green("(New!) ")):
+            puts(columns(["Just feel like browsing? Need a low stakes gacha fix?", col]))
+        with indent(7, quote=colored.green(">>>>")):
+            puts(columns(["The \"Random Character VA!\" option chooses a random popular character to search for!", col]))
 
     # main menu ---------------------------------------------------------------------------------------------------------------
     while True:
@@ -56,8 +51,18 @@ def main():
             char_search = inquirer.text(
                 message="Enter character name: "
             ).execute()
-            print("The character you searched was: " + char_search)     # pass this output to query later, get back char_list
-            char_list = queries.get_char_by_search(char_search)
+            print("The character you searched was: " + char_search)
+
+            # pass user search terms to query; char results = [(id, (name, anime))]
+            char_results = queries.get_char_by_search(char_search)
+
+            # Error
+            if len(char_results) == 0:
+                puts(colored.red("No results found. Please check your search terms."))
+                continue
+            
+            # filter out id; char_list = ['name (anime)',...]
+            char_list = [f"{char['char_name']} ({char['anime']})" for char in char_results]
             char_list.append("Return to Main Menu")
 
             # select from query (tbd)
@@ -69,17 +74,22 @@ def main():
             
             # return to main menu
             if char_select == 'Return to Main Menu':
-                next
+                continue
 
             # character chosen **get voice actor and va search results from query - pass char_select
-            print("Top ten characters voiced by Yoshitsugu Matsuoka: \n\n"
-                    "Inosuke Hashibara (Kimetsu no Yaiba)\n"
-                    "Koukichi Muta (Jujutsu Kaisen)\n"
-                    "Kazuto Kirigaya (Sword Art Online)\n"
-                    "Yosetsu Awase (Boku no Hero Academia 3)\n"
-                    "Teruki Hanazawa (Mob Psycho 100)\n"
-                    "... [five more results in 'character name (anime)' format]\n")     # query search results
-            next
+            selected_char_id = None
+            for char in char_results:
+                comparison_str = f"{char['char_name']} ({char['anime']})"
+                if comparison_str == char_select:
+                    selected_char_id = char['char_id']
+                    break
+            
+            char_and_va_info = queries.get_char_by_id(selected_char_id)
+            voiced_chars = queries.get_va_chars(char_and_va_info['va_id'])
+            print(f"{char_and_va_info['char_name']} is voiced by {char_and_va_info['va_name']}.\n")
+            puts(colored.green(f"\nTop ten characters voiced by {char_and_va_info['va_name']}:\n"))
+            puts(colored.cyan(voiced_chars))
+            continue
         
         # search by va -------------------------------------------------------------------------------------------------------
         if home == "va":
@@ -88,6 +98,12 @@ def main():
             ).execute()
             print("The voice actor you searched for was: " + va_search)     # pass this output to query later, get back va_list
             filtered_search = queries.get_va_by_search(va_search)
+
+            # Error
+            if len(filtered_search) == 0:
+                puts(colored.red("No results found. Please check your search terms."))
+                continue
+            
             va_list = [va['name']['full'] for va in filtered_search]
             max_len = 4 if len(va_list) > 4 else len(va_list)
             va_list = va_list[:max_len + 1]
@@ -102,19 +118,40 @@ def main():
             
             # return to main menu
             if va_select == 'Return to Main Menu':
-                next
+                continue
 
             # va chosen (get character search results from query)
             for va in filtered_search:
                 if va['name']['full'] == va_select:
                     va_id = va['id']
-            chars = queries.get_va_chars(va_id)
-            print(f"Top ten characters voiced by {va_select}:\n\n", chars)    # query search results
+            voiced_chars = queries.get_va_chars(va_id)
+            puts(colored.green(f"\nTop ten characters voiced by {va_select}:\n"))
+            puts(colored.cyan(voiced_chars))
         
         # random character ----------------------------------------------------------------------------------------------------
         if home == "rand_char":
+
+            # call microservice to get random id
             surprise = queries.get_rand_char()
-            print(f'character id number: {surprise}')
+            
+            # Microservice error (get_rand_char() returns error string if exeception occurs)
+            if type(surprise) is str:
+                puts(colored.red(surprise))
+                continue
+            
+            char_and_va_info = queries.get_char_by_id(surprise)
+
+            # Error
+            if len(char_and_va_info) == 0:
+                puts(colored.red("No results found, sorry about that! Please try again to generate a different random ID."))
+                continue
+
+            voiced_chars = queries.get_va_chars(char_and_va_info['va_id'])
+            print(f"Your surprise character is: {char_and_va_info['char_name']} from {char_and_va_info['anime']}!\n",
+                  f"{char_and_va_info['char_name']} is voiced by {char_and_va_info['va_name']}.\n")
+            puts(colored.green(f"\nTop ten characters voiced by {char_and_va_info['va_name']}:\n"))
+            puts(colored.cyan(voiced_chars))
+            continue
 
         # help/additional info ------------------------------------------------------------------------------------------------
         if home == "help":
