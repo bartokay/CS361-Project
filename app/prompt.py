@@ -9,7 +9,7 @@ def main():
     """
     User interface/prompting for command line
     """
-    col = 70
+    col = 90
 
     # welcome message --------------------------------------------------------------------------------------------------------
     puts(colored.magenta("Welcome to VA Finder!"))
@@ -59,6 +59,7 @@ def main():
             # Error
             if len(char_results) == 0:
                 puts(colored.red("No results found. Please check your search terms."))
+                puts(colored.red("Select \"Help\" for more information."))
                 continue
             
             # filter out id; char_list = ['name (anime)',...]
@@ -108,6 +109,7 @@ def main():
             # Error
             if len(filtered_search) == 0:
                 puts(colored.red("No results found. Please check your search terms."))
+                puts(colored.red("Select \"Help\" for more information."))
                 continue
             
             va_list = [va['name']['full'] for va in filtered_search]
@@ -150,6 +152,7 @@ def main():
             # Error
             if len(char_and_va_info) == 0:
                 puts(colored.red("No results found, sorry about that! Please try again to generate a different random ID."))
+                puts(colored.red("Select \"Help\" for more information."))
                 continue
 
             voiced_chars = queries.get_va_chars(char_and_va_info['va_id'])

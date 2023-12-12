@@ -1,0 +1,65 @@
+
+>> My project and all features will be shown in the top PowerShell window.
+	-- I'll go through each menu item in order from top to bottom.
+		-- Search By Character:
+			Search an anime character's name to get their voice actor and other characters they voice for
+
+		-- Search By Voice Actor:
+			Search a voice actor's name to see other characters they voice for
+
+		-- Random Character VA!:
+			My partner's microservice queries Anilist for a random ID number of a character in the top 500 most favourited characters on Anilist.
+			I use that random ID number to find the voice actor of the character, and give a list of other characters that voice for.
+
+		-- Help:
+			More information about the features of this app.
+
+>> My partner's microservice is running in the bottom shell.
+	-- In the main menu, "Generate Random Character" is the feature that incorporates my partner's microservice.
+		The microservice queries Anilist for a random ID number of a character in the top 500 most favourited characters on Anilist.
+		I use that random ID number to find the voice actor of the character, and give a list of other characters that voice for.
+
+
+
+***Inclusivity Heuristics:
+IH 1) [new and existing feature benefits]
+-- Random character generator is "new", benefits of search and help functions explained clearly in opening/welcome message
+
+IH 2) [new and existing features cost]
+-- Introduction in opening message explains that searches will give the top fives matches, this is also restated in more detail
+in the "Help" section. Users are also warned that selecting "Exit" will close the program
+
+IH 3) [information gathering]
+-- "Help" option lets people who want to get more information do so while not overwhelming people who don't need it. There is also a brief overview of the app features and how they work in the welcome message when the app is started.
+
+IH 4) [familiar features]
+-- Program always loops back to the main menu at the end of a search after results are displayed. "Return to Main Menu" option is 
+also always available in the selection menu as a search progresses.
+
+IH 5) [undo/redo/backtracking]
+-- "Return to Main Menu" is available at all steps of a search in case the search is not going the way a user thought it would
+
+IH 6) [explicit path]
+-- Users are guided through each search option with detailed prompts, current line changed color to make selections apparent
+
+IH 7) [provide ways to try things]
+-- The final goal of a search is a list of the top ten most popular characters a voice actor voices for. Users are provided
+with three options for getting there:
+	1) Search by character will lead to the voice actor
+	2) Directly searching for the voice actor
+	3) Using the random character generator
+
+IH 8) [tinkerers can tinker mindfully]
+-- The introduction gives enough information for tinkerer to just start searching and see where it takes them. The search options in the
+menu are also aptly named. However, when no results are found from a search, users are reminded to double check their search terms, and the "Help" option is gently recommended. The main menu is made available immediately after any search, whether it completes successfully or not.
+
+
+***Quality Attribute:
+- Precision: (From Wikipedia) "the fraction of relevant instances among the retrieved instances"; "the fraction of retrieved documents
+which are relevant to the query".
+	-- giving the user options if their search doesnt return an exact match
+	-- many characters and voice actors have similar names, also there are many characters and voice actors whose nicknames are more 
+	   familiar than their real names
+	-- important for me to filter through search results correctly, and giving the user a few matches to choose from also
+	   helps them to find exactly who they were looking for even if their search terms are not perfect or extremely specific
+
