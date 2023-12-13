@@ -172,27 +172,33 @@ def main():
             puts(colored.green("Sure! Here are some tips for using VA Finder:"))
 
             with indent(7, quote=colored.green('-->')):
-                puts(columns(["Selecting \"Search by Character\" will first search for anime characters ", col]))
+                puts(columns(["Selecting \"Search by Character\" will first search for anime characters matching your ", col]))
             with indent(7):
-                puts(columns(["matching your name search. Many characters have similar or the same names, so you will then be able to select from a list of matches. "
+                puts(columns(["name search. Many characters have similar or the same names, so you will then be able to select from a list of matches. "
                             "Once the character that you're searching for is confirmed, the voice actor who voices that character will "
                             "be displayed, along with the top ten most popular characters they voice for.", col]))
 
             with indent(7, quote=colored.green('-->')):
-                puts(columns(["If you know the voice actor's name already, you can select the ", col]))
+                puts(columns(["If you know the voice actor's name already, you can select the \"Search by voice actor\"", col]))
             with indent(7):
-                puts(columns(["\"Search by voice actor\" option. " 
-                            "This option will also display the top five matches from anilist for you to scroll through using the arrows on your keyboard.", col]))
+                puts(columns(["option. This option will also display the top five matches from anilist for you to scroll through using the arrows on your keyboard.", col]))
                 
             with indent(7, quote=colored.green('-->')):
-                puts(columns(["Using both first and last name in either search option increases your", col]))
+                puts(columns(["If you're having trouble finding the character you want, using both first and last name in ", col]))
             with indent(7):
-                puts(columns(["chances of finding a match.", col]))
+                puts(columns(["either search option increases your chances of finding a match.", col]))
 
             with indent(7, quote=colored.green('-->')):
-                puts(columns(["This tool was built using the anilist API, so the popularity of", col]))
+                puts(columns(["This tool was built using the anilist API, so the popularity of characters is based", col]))
             with indent(7):
-                puts(columns(["characters is based on current anilist rankings.", col]))
+                puts(columns(["on current anilist rankings.", col]))
+            
+            with indent(7, quote=colored.green('-->')):
+                puts(columns(["Selecting \"Random Character VA!\" generates the ID number of a random character in the top", col]))
+            with indent(7):
+                puts(columns(["500 most popular characters on AniList, and gives the voice actor for that character along", col]))
+            with indent(7):
+                puts(columns(["with the top 10 most popular characters they voice for.", col]))
 
             with indent(7, quote=colored.green('-->')):
                 puts(columns(["Selecting \"Exit\" stops the program.", col]))
